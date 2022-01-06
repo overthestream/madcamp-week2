@@ -1,0 +1,23 @@
+{
+  "name": "madcamp_week2",
+  "version": "1.0.0",
+  "description": "2021 Winter [CS496] KAIST 몰입캠프 Project #2",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": "https://github.com/overthestream/madcamp-week2",
+  "author": "overthestream <njhnjh02@naver.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.1.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1"
+  },
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
