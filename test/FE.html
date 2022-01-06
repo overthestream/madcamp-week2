@@ -34,7 +34,7 @@
       var url = 'http://' + host + ':' + port;
       socket = io(url, options); // io는 socket.io.js 에서 선언된 전역변수임
 
-      socket.on('connect', () => {
+      socket.on('connection', () => {
         println('웹소켓 서버에 연결되었습니다. : ' + url);
         console.log('socket.id : ' + socket.id);
       });
