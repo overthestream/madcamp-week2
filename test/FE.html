@@ -16,13 +16,28 @@
     // 문서 로딩 후 실행됨
     $(function () {
 
-      $("#connectButton").bind('click', function (event) {
+      $("#connectButton").bind('click', (event) => {
         println('connectButton이 클릭되었습니다.');
 
         host = $('#hostInput').val();
         port = $('#portInput').val();
 
         connectToServer();
+      });
+
+      $('#sendButton').bind('click', (event) => {
+        var sender = $('#senderInput').val();
+
+        var output = { sender: sender, recepient: 'ALL', data: '모두에게 안녕' };
+        console.log('서버로 보낼 데이터 : ' + JSON.stringify(output));
+
+        if (socket == undefined) {
+          alert('서버에 연결되어 있지 않습니다. 먼저 서버에 연결하세요.');
+          return;
+        }
+
+        // step1. 서버 소켓에 message 이벤트를 호출
+        socket.emit('messageS', output);
       });
 
     });
@@ -34,9 +49,16 @@
       var url = 'http://' + host + ':' + port;
       socket = io(url, options); // io는 socket.io.js 에서 선언된 전역변수임
 
-      socket.on('connection', () => {
+      socket.on('connect', () => {
         println('웹소켓 서버에 연결되었습니다. : ' + url);
         console.log('socket.id : ' + socket.id);
+
+        // step4. 서버 소켓에 의해 messageC 이벤트가 호출되고 화면에 메시지가 나옴
+        socket.on('messageC', (message) => {
+          console.log(JSON.stringify(message));
+
+          println('<p>수신 메시지 : ' + message.sender + ', ' + message.recepient + ', ' + message.data + '</p>');
+        });
       });
 
       socket.on('disconnect', () => {
@@ -54,13 +76,18 @@
 </head>
 
 <body>
-  <h3>채팅 클라이언트 01</h3>
+  <h3>채팅 클라이언트 02</h3>
   <br>
   <div>
-    <input type="text" id="hostInput" value="localhost" />
-    <input type="text" id="portInput" value="3000" />
+    <input type="text" id="hostInput" value="172.10.5.89" />
+    <input type="text" id="portInput" value="80" />
 
     <input type="button" id="connectButton" value="연결하기" />
+  </div>
+  <div>
+    <div><span>보내는사람 아이디 :</span> <input type="text" id="senderInput" value="test01" /></div>
+    <br>
+    <input type="button" id="sendButton" value="전송" />
   </div>
 
   <hr />
