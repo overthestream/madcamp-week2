@@ -15,7 +15,7 @@ const webSocket = server => {
         console.dir(
           '나를 포함한 모든 클라이언트에게 message 이벤트를 전송합니다.'
         );
-        io.sockets.emit('messageC', message);
+        socket.sockets.emit('messageC', message);
       }
     });
   });
