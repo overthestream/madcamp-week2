@@ -3,10 +3,10 @@ const socketIO = require('socket.io');
 const webSocket = server => {
   const socket = socketIO(server);
   console.log(`now server can response socket.io request.`);
-  socket.on('connection', req => {
-    console.log('connection info : ', req.request.connection._peername);
+  socket.on('connection', io => {
+    console.log('connection info : ', io.request.connection._peername);
 
-    socket.on('messageS', message => {
+    io.on('messageS', message => {
       console.dir(message);
       console.log('message 이벤트를 받았습니다.');
 
