@@ -8,7 +8,10 @@
     "plugin:prettier/recommended"
   ],
   "plugins": [],
-  "rules": {},
+  "rules": {
+    "no-console": "off",
+    "no-underscore-dangle": "off"
+  },
   "settings": {
     "import/resolver": {
       "node": {
