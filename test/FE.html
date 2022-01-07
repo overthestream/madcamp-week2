@@ -28,7 +28,7 @@
       $('#sendButton').bind('click', (event) => {
         var sender = $('#senderInput').val();
 
-        var output = { sender: sender, recepient: 'ALL', data: '모두에게 안녕' };
+        var output = { sender: sender, recepient: 'ALL', data: 'hello', sender_id: socket.id };
         console.log('서버로 보낼 데이터 : ' + JSON.stringify(output));
 
         if (socket == undefined) {
@@ -36,6 +36,7 @@
           return;
         }
 
+        socket.emit('getOpponent', { opponentID: socket.id })
         // step1. 서버 소켓에 message 이벤트를 호출
         socket.emit('messageS', output);
       });
@@ -53,12 +54,18 @@
         println('웹소켓 서버에 연결되었습니다. : ' + url);
         console.log('socket.id : ' + socket.id);
 
+
         // step4. 서버 소켓에 의해 messageC 이벤트가 호출되고 화면에 메시지가 나옴
         socket.on('messageC', (message) => {
           console.log(JSON.stringify(message));
 
           println('<p>수신 메시지 : ' + message.sender + ', ' + message.recepient + ', ' + message.data + '</p>');
         });
+
+        socket.on('match', data => {
+          println(data.opponentID);
+        })
+
       });
 
       socket.on('disconnect', () => {
@@ -89,7 +96,10 @@
     <br>
     <input type="button" id="sendButton" value="전송" />
   </div>
-
+  <a
+    href="https://kauth.kakao.com/oauth/authorize?client_id={b7a97e0a7350b5e68195f617147e8c30}&redirect_uri={http://172.10.5.89/oauth}&response_type=code">
+    카카오 로그인
+  </a>
   <hr />
   <p>결과 : </p>
   <div id="result"></div>
