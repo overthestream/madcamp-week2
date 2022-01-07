@@ -1,11 +1,11 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'mbti',
-  password: '0129',
-  port: 5432,
+  user: process.env.DB_USER || 'postgres',
+  host: process.env.DB_HOST || 'localhost',
+  database: process.env.DB_NAME || 'mbti',
+  password: process.env.DB_PW || '0129',
+  port: process.env.DB_PORT || 5432,
 });
 
 const queryGenerator = async (queryStr: string, queryVal: Array<string>) => {
