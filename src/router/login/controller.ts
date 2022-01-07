@@ -15,6 +15,7 @@ const login = async (req: Request, res: Response) => {
     };
     const rows: Array<JSON> = await queryGenerator(query);
     if (rows.length !== 0) {
+
       res.json(rows);
       res.status(200);
     } else {
@@ -35,6 +36,19 @@ const login = async (req: Request, res: Response) => {
 };
 
 
-const putMBTI =
+const putMBTI = async (req: Request, res: Response) => {
+  try {
+    const { MBTI, id } = req.body;
+    const query = {
+      str: `UPDATE users SET mbti = $1 WHERE id = $2`,
+      val: [MBTI, id]
+    }
+    await queryGenerator(query);
+    res.status(200);
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+  }
+}
 
-  module.exports = { login }
+module.exports = { login, putMBTI }
