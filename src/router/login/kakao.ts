@@ -6,11 +6,13 @@ dotenv.config();
 const API_KEY = process.env.API_KEY;
 const REDIRECT_URI = 'http://localhost:3000/oauth/callback/kakao';
 interface loginResponse {
-  token_type: string;
-  access_token: string;
-  expires_in: number;
-  refresh_token: string;
-  refresh_token_expires_in: string;
+  data: {
+    token_type: string;
+    access_token: string;
+    expires_in: number;
+    refresh_token: string;
+    refresh_token_expires_in: string;
+  }
 }
 
 interface userInfoResponse {
@@ -45,7 +47,7 @@ const getKaKaoToken = async (code: string) => {
       null,
       header
     );
-    return response.access_token;
+    return response.data.access_token;
   } catch (err) {
     console.log(err);
   }
@@ -53,12 +55,7 @@ const getKaKaoToken = async (code: string) => {
 
 const getKakaoUserInfo = async (token: string) => {
   try {
-    const headers: AxiosRequestHeaders = {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
-      Authorization: `Bearer ${token}`,
-    };
-    console.log(headers);
-    const response: userInfoResponse = await axios.get(
+    const response = await axios.get(
       `https://kapi.kakao.com/v2/user/me`,
       {
         headers: {
@@ -67,12 +64,13 @@ const getKakaoUserInfo = async (token: string) => {
         },
       }
     );
+    const data = response.data;
 
-    const imageString = response.properties.profile_image;
-    const thumbnailString = response.properties.thumbnail_image;
-    const { email, gender } = response.kakao_account;
-    const ageRange = response.kakao_account.age_range;
-    const { id } = response;
+    const imageString = data.properties.profile_image;
+    const thumbnailString = data.properties.thumbnail_image;
+    const { email, gender } = data.kakao_account;
+    const ageRange = data.kakao_account.age_range;
+    const { id } = data;
 
     const result: userInfo = {
       imageString,
@@ -88,4 +86,4 @@ const getKakaoUserInfo = async (token: string) => {
   }
 };
 
-module.exports = { kakaoLogin: getKaKaoToken, getKakaoUserInfo };
+module.exports = { getKaKaoToken, getKakaoUserInfo };

@@ -1,9 +1,8 @@
 import express from 'express';
-
-const controller = require('./controller')
+import loginRouter from './login/index'
 
 const router = express.Router();
 
-router.get('/login/:code', controller.login);
+router.use('/oauth', loginRouter);
 
 export default router;

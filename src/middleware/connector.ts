@@ -8,10 +8,15 @@ const pool = new Pool({
   port: process.env.DB_PORT || 5432,
 });
 
-const queryGenerator = async (queryStr: string, queryVal: Array<string>) => {
+interface query {
+  str: string,
+  val: Array<any>
+}
+
+const queryGenerator = async (query: query) => {
   const client = await pool.connect();
   try {
-    const res = await client.query(queryStr, queryVal);
+    const res = await client.query(query.str, query.val);
     client.release();
     return res.rows;
   } catch (err) {
@@ -19,4 +24,4 @@ const queryGenerator = async (queryStr: string, queryVal: Array<string>) => {
   }
 };
 
-module.exports = queryGenerator;
+export default queryGenerator;
