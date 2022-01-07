@@ -12,7 +12,7 @@ interface loginResponse {
     expires_in: number;
     refresh_token: string;
     refresh_token_expires_in: string;
-  }
+  };
 }
 
 interface userInfoResponse {
@@ -55,15 +55,12 @@ const getKaKaoToken = async (code: string) => {
 
 const getKakaoUserInfo = async (token: string) => {
   try {
-    const response = await axios.get(
-      `https://kapi.kakao.com/v2/user/me`,
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.get(`https://kapi.kakao.com/v2/user/me`, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const data = response.data;
 
     const imageString = data.properties.profile_image;

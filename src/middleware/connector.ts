@@ -9,8 +9,8 @@ const pool = new Pool({
 });
 
 interface query {
-  str: string,
-  val: Array<any>
+  str: string;
+  val: Array<any>;
 }
 
 const queryGenerator = async (query: query) => {
