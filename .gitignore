@@ -4,3 +4,4 @@ test/**
 dist/**
 yarn-error.log
 .env
+sql/**
