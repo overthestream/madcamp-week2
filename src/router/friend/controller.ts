@@ -42,3 +42,19 @@ export const deleteFriend = async (req: Request, res: Response) => {
     res.sendStatus(500);
   }
 };
+
+export const saveTalk = async (req: Request, res: Response) => {
+  try {
+    const { from, to, talk, timestamp } = req.body;
+    const query = {
+      str: `INSERT INTO talk values ($1, $2, $3, $4)`,
+      val: [from, to, talk, timestamp],
+    };
+    console.log(`${from} send to ${to}: ${talk} - ${timestamp}`);
+    await queryGenerator(query);
+    res.sendStatus(200);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+};

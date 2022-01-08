@@ -16,6 +16,11 @@ interface msgData {
   timestamp: Date;
 }
 
+interface talkData extends msgData {
+  senderID: string,
+  receiverID: string,
+}
+
 export const useSocket = (server: http.Server) => {
   const io = new Server(server);
 
@@ -61,6 +66,14 @@ export const useSocket = (server: http.Server) => {
       );
       console.log(`MSG: ${data.message} (${data.timestamp})`);
       io.to(data.receiverSocket).emit('receiveMsg', data);
+    });
+
+    socket.on('sendTalk', (data: talkData) => {
+      console.log(
+        `${data.senderID} send Talk to ${data.receiverID}`
+      );
+      console.log(`TALK: ${data.message} (${data.timestamp})`);
+      io.to(data.receiverSocket).emit('receiveTalk', data);
     });
 
     socket.on('disconnect', () => {
