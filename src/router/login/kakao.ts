@@ -15,19 +15,6 @@ interface loginResponse {
   };
 }
 
-interface userInfoResponse {
-  id: number;
-  properties: {
-    profile_image: string;
-    thumbnail_image: string;
-  };
-  kakao_account: {
-    email: string;
-    age_range: string;
-    gender: string;
-  };
-}
-
 export interface userInfo {
   id: number;
   imageString: string;
