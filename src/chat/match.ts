@@ -1,15 +1,12 @@
 import queryGenerator from 'src/middleware/connector';
 import { userInfo } from 'src/router/login/kakao';
+import { userData } from './socket';
 
-interface user extends userInfo {
-  mbti: string;
-}
-
-export const enqueue = (id: number) => {
+export const enqueue = (id: string, socketID: string) => {
   try {
     const query = {
-      str: `INSERT INTO match_queue VALUES($1)`,
-      val: [id],
+      str: `INSERT INTO match_queue VALUES($1, $2)`,
+      val: [id, socketID],
     };
     queryGenerator(query);
     console.log(`user id: ${id} - enqueue!`);
@@ -18,7 +15,7 @@ export const enqueue = (id: number) => {
   }
 };
 
-export const dequeue = (id: number) => {
+export const dequeue = (id: string) => {
   try {
     const query = {
       str: `DELETE FROM match_queue WHERE id = $1)`,
@@ -31,13 +28,13 @@ export const dequeue = (id: number) => {
   }
 };
 
-export const match = async (user: user) => {
+export const match = async (user: userData) => {
   try {
     const query = {
-      str: `SELECT users.id, users.age, users.gender, users.mbti FROM users NATURAL JOIN match_queue WHERE users.mbti = $1 `,
+      str: `SELECT match_queue.socketID, users.id, users.age, users.gender, users.mbti FROM users NATURAL JOIN match_queue WHERE users.mbti = $1 `,
       val: [user.mbti],
     };
-    const rows: Array<JSON> = await queryGenerator(query);
+    const rows: Array<any> = await queryGenerator(query);
     if (rows.length) {
       return rows[0];
     } else {
