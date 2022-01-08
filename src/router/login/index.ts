@@ -1,10 +1,9 @@
 import express from 'express';
-
-const controller = require('./controller');
+import { login, putMBTI } from './controller';
 
 const router = express.Router();
 
-router.get('/login/:code', controller.login);
-router.put('/mbti', controller.putMBTI);
+router.get('/oauth/:code', login);
+router.put('/mbti', putMBTI);
 
 export default router;

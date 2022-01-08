@@ -1,5 +1,4 @@
-import queryGenerator from 'src/middleware/connector';
-import { userInfo } from 'src/router/login/kakao';
+import queryGenerator from '../middleware/connector';
 import { userData } from './socket';
 
 export const enqueue = (id: string, socketID: string) => {
@@ -15,13 +14,13 @@ export const enqueue = (id: string, socketID: string) => {
   }
 };
 
-export const dequeue = (id: string) => {
+export const dequeue = async (id: string) => {
   try {
     const query = {
       str: `DELETE FROM match_queue WHERE id = $1)`,
       val: [id],
     };
-    queryGenerator(query);
+    await queryGenerator(query);
     console.log(`user id: ${id} - dequeue!`);
   } catch (err) {
     console.log(err);

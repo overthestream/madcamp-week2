@@ -3,6 +3,6 @@ import loginRouter from './login/index';
 
 const router = express.Router();
 
-router.use('/oauth', loginRouter);
+router.use('/user', loginRouter);
 
 export default router;

@@ -1,14 +1,17 @@
 import { Request, Response } from 'express';
 import { userInfo } from './kakao';
 import queryGenerator from '../../middleware/connector';
+import { getKaKaoToken, getKakaoUserInfo } from './kakao';
 
-const kakao = require('./kakao');
-
-const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
   try {
     const { code } = req.params;
-    const token: string = await kakao.getKaKaoToken(code);
-    const user: userInfo = await kakao.getKakaoUserInfo(token);
+    const token: string | undefined = await getKaKaoToken(code);
+    const user: userInfo | undefined = await getKakaoUserInfo(token);
+    if (user === undefined) {
+      res.status(200);
+      return;
+    }
     const query = {
       str: `SELECT * FROM users WHERE id = $1`,
       val: [user.id],
@@ -41,19 +44,18 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
-const putMBTI = async (req: Request, res: Response) => {
+export const putMBTI = async (req: Request, res: Response) => {
   try {
-    const { MBTI, id } = req.body;
+    console.log(req);
+    const { MBTI, id } = req.query;
     const query = {
       str: `UPDATE users SET mbti = $1 WHERE id = $2`,
       val: [MBTI, id],
     };
     await queryGenerator(query);
-    res.status(200);
+    res.sendStatus(200);
   } catch (err) {
     console.log(err);
-    res.status(500);
+    res.sendStatus(500);
   }
 };
-
-module.exports = { login, putMBTI };

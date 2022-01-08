@@ -16,30 +16,29 @@ interface msgData {
   timestamp: Date;
 }
 
-export const webSocket = (server: http.Server) => {
+export const useSocket = (server: http.Server) => {
   const io = new Server(server);
 
   console.log(`now server can response socket.io request.`);
 
   io.on('connection', (socket: Socket) => {
+    console.log(`socket connected.`);
     socket.on('init', async (data: userData) => {
-      const matchResultJSON = await match(data);
-      if (matchResultJSON === undefined) {
+      const matchResult = await match(data);
+      if (matchResult === undefined) {
         enqueue(data.id, socket.id);
       } else {
-        dequeue(data.id);
-
-        const matchResult = JSON.parse(matchResultJSON);
+        await dequeue(matchResult.id);
 
         const user1Socket = socket.id;
-        const user2Socket = matchResult.match_queue.socketID;
+        const user2Socket = matchResult.socketid;
 
         const data1 = {
           opponentSocket: user2Socket,
-          opponentID: matchResult.users.id,
-          opponentMBTI: matchResult.users.mbti,
-          opponenetAge: matchResult.users.age,
-          opponenetGender: matchResult.users.gender,
+          opponentID: matchResult.id,
+          opponentMBTI: matchResult.mbti,
+          opponenetAge: matchResult.age,
+          opponenetGender: matchResult.gender,
         };
 
         const data2 = {

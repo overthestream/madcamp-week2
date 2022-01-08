@@ -1,6 +1,6 @@
-const http = require('http');
-const server = require('./app');
-const useSocket = require('./chat/socket');
+import http from 'http';
+import server from './app';
+import { useSocket } from './chat/socket';
 
 const PORT = 80;
 

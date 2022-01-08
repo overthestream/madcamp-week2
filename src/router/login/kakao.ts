@@ -1,5 +1,4 @@
 import axios, { AxiosRequestHeaders } from 'axios';
-import exp from 'constants';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -24,7 +23,7 @@ export interface userInfo {
   gender: string;
 }
 
-const getKaKaoToken = async (code: string) => {
+export const getKaKaoToken = async (code?: string) => {
   try {
     const header: AxiosRequestHeaders = {
       'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
@@ -40,7 +39,7 @@ const getKaKaoToken = async (code: string) => {
   }
 };
 
-const getKakaoUserInfo = async (token: string) => {
+export const getKakaoUserInfo = async (token?: string) => {
   try {
     const response = await axios.get(`https://kapi.kakao.com/v2/user/me`, {
       headers: {
@@ -69,5 +68,3 @@ const getKakaoUserInfo = async (token: string) => {
     console.log(err);
   }
 };
-
-module.exports = { getKaKaoToken, getKakaoUserInfo };
