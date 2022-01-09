@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const API_KEY = process.env.API_KEY;
-const REDIRECT_URI = 'http://192.249.18.173/user/oauth/callback/kakao';
+const REDIRECT_URI = 'http://192.249.18.173/user/spinner';
 interface loginResponse {
   data: {
     token_type: string;

@@ -3,6 +3,59 @@ import { userInfo } from './kakao';
 import queryGenerator from '../../middleware/connector';
 import { getKaKaoToken, getKakaoUserInfo } from './kakao';
 
+export const spinner = async (req: Request, res: Response) => {
+  try {
+    console.log('spinner');
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+
+      <head>
+        <style>
+          .container {
+            height: 100%;
+            width: 100%;
+          }
+
+          .loader {
+            margin-top: 60%;
+            margin-left: 40%;
+            border-top: 16px solid #F9FBFC;
+            border-right: 16px solid #A0DBDB;
+            border-bottom: 16px solid #56A7A7;
+            border-left: 16px solid #FCEA90;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+          }
+
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        </style>
+      </head>
+
+      <body>
+        <div class="container">
+          <div class="loader"></div>
+        </div>
+      </body>
+
+      </html>`);
+    res.status(200);
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+  }
+};
+
 export const login = async (req: Request, res: Response) => {
   try {
     const { code } = req.query;

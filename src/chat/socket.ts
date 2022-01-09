@@ -17,8 +17,8 @@ interface msgData {
 }
 
 interface talkData extends msgData {
-  senderID: string,
-  receiverID: string,
+  senderID: string;
+  receiverID: string;
 }
 
 export const useSocket = (server: http.Server) => {
@@ -69,9 +69,7 @@ export const useSocket = (server: http.Server) => {
     });
 
     socket.on('sendTalk', (data: talkData) => {
-      console.log(
-        `${data.senderID} send Talk to ${data.receiverID}`
-      );
+      console.log(`${data.senderID} send Talk to ${data.receiverID}`);
       console.log(`TALK: ${data.message} (${data.timestamp})`);
       io.to(data.receiverSocket).emit('receiveTalk', data);
     });
