@@ -5,8 +5,9 @@ import { getKaKaoToken, getKakaoUserInfo } from './kakao';
 
 export const login = async (req: Request, res: Response) => {
   try {
-    const { code } = req.params;
-    const token: string | undefined = await getKaKaoToken(code);
+    const { code } = req.query;
+    const parsedCode = code?.toString();
+    const token: string | undefined = await getKaKaoToken(parsedCode);
     const user: userInfo | undefined = await getKakaoUserInfo(token);
     if (user === undefined) {
       res.status(200);
