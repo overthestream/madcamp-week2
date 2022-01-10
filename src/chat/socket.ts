@@ -45,16 +45,16 @@ export const useSocket = (server: http.Server) => {
             opponentSocket: user2Socket,
             opponentID: matchResult.id,
             opponentMBTI: matchResult.mbti,
-            opponenetAge: matchResult.age,
-            opponenetGender: matchResult.gender,
+            opponentAge: matchResult.age,
+            opponentGender: matchResult.gender,
           };
 
           const data2 = {
             opponentSocket: user1Socket,
             opponentID: data.id,
             opponentMBTI: data.mbti,
-            opponenetAge: data.age,
-            opponenetGender: data.gender,
+            opponentAge: data.age,
+            opponentGender: data.gender,
           };
           io.to(user1Socket).emit('match', data1);
           io.to(user2Socket).emit('match', data2);
