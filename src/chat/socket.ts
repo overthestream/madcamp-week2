@@ -36,8 +36,8 @@ export const useSocket = (server: http.Server) => {
         if (matchResult === undefined) {
           enqueue(data.id, socket.id, data.finding);
         } else {
+          console.log(matchResult);
           await dequeue(matchResult.id);
-
           const user1Socket = socket.id;
           const user2Socket = matchResult.socketid;
 

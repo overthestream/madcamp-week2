@@ -17,7 +17,7 @@ export const enqueue = (id: string, socketID: string, finding: Number) => {
 export const dequeue = async (id: string) => {
   try {
     const query = {
-      str: `DELETE FROM match_queue WHERE id = $1)`,
+      str: `DELETE FROM match_queue WHERE id = $1`,
       val: [id],
     };
     await queryGenerator(query);
@@ -34,9 +34,10 @@ export const match = async (user: userData) => {
       val: [],
     };
     const rows: Array<any> = await queryGenerator(query);
-    const filteredRows = rows.filter((element) =>
-      (element.finding & 1 << mbtiMapping(user.mbti)) && (user.finding.valueOf() & 1 << mbtiMapping(element.mbti))
-    )
+    const filteredRows = rows.filter((element) => {
+      console.log(element);
+      return (element.finding & 1 << mbtiMapping(user.mbti)) && (user.finding.valueOf() & 1 << mbtiMapping(element.mbti))
+    })
     if (filteredRows.length) {
       return filteredRows[0];
     } else {
@@ -55,5 +56,6 @@ const mbtiMapping = (mbti: string) => {
   for (let i = 0; i < 4; ++i) {
     if (mbti[i] == map[i]) result |= 1 << i;
   }
+  console.log(`${mbti}: ${result}`);
   return result;
 }
