@@ -1,6 +1,7 @@
 import { Server, Socket } from 'socket.io';
 import http from 'http';
 import { match, enqueue, dequeue } from './match';
+import queryGenerator from '../middleware/connector';
 
 export interface userData {
   id: string;
@@ -77,11 +78,18 @@ export const useSocket = (server: http.Server) => {
     socket.on('sendTalk', (data: talkData) => {
       console.log(`${data.senderID} send Talk to ${data.receiverID}`);
       console.log(`TALK: ${data.message} (${data.timestamp})`);
-      io.to(data.receiverSocket).emit('receiveTalk', data);
+
+      const query = {
+        str: `INSERT INTO talk values ($1, $2, $3, $4)`,
+        val: [data.senderID, data.receiverID, data.message, data.timestamp],
+      };
+      queryGenerator(query);
+      socket.broadcast.emit('receiveTalk', data);
     });
 
     socket.on('disconnect', () => {
       console.log('disconnected');
+      dequeue(socket.id);
       socket.broadcast.emit('opponenetDisconnected!', socket.id);
     });
   });

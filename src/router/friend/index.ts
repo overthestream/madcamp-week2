@@ -1,11 +1,11 @@
 import express from 'express';
-import { addFriend, deleteFriend, getFriend, saveTalk } from './controller';
+import { addFriend, deleteFriend, getFriend, getTalk } from './controller';
 
 const router = express.Router();
 
 router.get('/get', getFriend);
 router.post('/add', addFriend);
 router.delete('/delete', deleteFriend);
-router.post('/send', saveTalk);
+router.get('/talk', getTalk);
 
 export default router;

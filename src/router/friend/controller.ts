@@ -60,16 +60,19 @@ export const deleteFriend = async (req: Request, res: Response) => {
   }
 };
 
-export const saveTalk = async (req: Request, res: Response) => {
+export const getTalk = async (req: Request, res: Response) => {
   try {
-    const { from, to, talk, timestamp } = req.body;
+    const { from, to } = req.query;
+    console.log(from);
+    console.log(to);
     const query = {
-      str: `INSERT INTO talk values ($1, $2, $3, $4)`,
-      val: [from, to, talk, timestamp],
+      str: `SELECT * FROM talk WHERE (send_from = $1 AND send_to = $2) OR (send_from = $2 AND send_to = $1) ORDER BY send_at`,
+      val: [from, to],
     };
-    console.log(`${from} send to ${to}: ${talk} - ${timestamp}`);
-    await queryGenerator(query);
-    res.sendStatus(200);
+    const result = await queryGenerator(query);
+    console.log(result);
+    res.json(result);
+    res.status(200);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
