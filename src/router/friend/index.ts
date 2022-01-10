@@ -9,5 +9,4 @@ router.post('/send', saveTalk);
 
 export default router;
 
-
 //http://192.249.18

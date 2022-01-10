@@ -100,13 +100,28 @@ export const login = async (req: Request, res: Response) => {
 
 export const putMBTI = async (req: Request, res: Response) => {
   try {
-    console.log(req);
-    const { MBTI, id } = req.query;
+    const { mbti, id } = req.query;
     const query = {
-      str: `UPDATE users SET mbti = $1 WHERE id = $2`,
-      val: [MBTI, id],
+      str: `UPDATE users SET mbti = $1 WHERE id = '${id}'`,
+      val: [mbti],
     };
     await queryGenerator(query);
+    res.sendStatus(200);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+};
+
+export const putNickName = async (req: Request, res: Response) => {
+  try {
+    const { nick, id } = req.query;
+    const query = {
+      str: `UPDATE users SET nick = $1 WHERE id = $2`,
+      val: [nick, id],
+    };
+    await queryGenerator(query);
+
     res.sendStatus(200);
   } catch (err) {
     console.log(err);
