@@ -81,6 +81,7 @@ export const useSocket = (server: http.Server) => {
     });
 
     socket.on('disconnect', () => {
+      console.log('disconnected');
       socket.broadcast.emit('opponenetDisconnected!', socket.id);
     });
   });
