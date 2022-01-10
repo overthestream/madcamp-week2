@@ -30,35 +30,38 @@ export const useSocket = (server: http.Server) => {
   io.on('connection', (socket: Socket) => {
     console.log(`socket connected.`);
     socket.on('init', async (data: userData) => {
-      const matchResult = await match(data);
-      if (matchResult === undefined) {
-        enqueue(data.id, socket.id, data.finding);
-      } else {
-        await dequeue(matchResult.id);
+      console.log(data);
+      try {
+        const matchResult = await match(data);
+        if (matchResult === undefined) {
+          enqueue(data.id, socket.id, data.finding);
+        } else {
+          await dequeue(matchResult.id);
 
-        const user1Socket = socket.id;
-        const user2Socket = matchResult.socketid;
+          const user1Socket = socket.id;
+          const user2Socket = matchResult.socketid;
 
-        const data1 = {
-          opponentSocket: user2Socket,
-          opponentID: matchResult.id,
-          opponentMBTI: matchResult.mbti,
-          opponenetAge: matchResult.age,
-          opponenetGender: matchResult.gender,
-        };
+          const data1 = {
+            opponentSocket: user2Socket,
+            opponentID: matchResult.id,
+            opponentMBTI: matchResult.mbti,
+            opponenetAge: matchResult.age,
+            opponenetGender: matchResult.gender,
+          };
 
-        const data2 = {
-          opponentSocket: user1Socket,
-          opponentID: data.id,
-          opponentMBTI: data.mbti,
-          opponenetAge: data.age,
-          opponenetGender: data.gender,
-        };
-        io.to(user1Socket).emit('match', data1);
-        io.to(user2Socket).emit('match', data2);
+          const data2 = {
+            opponentSocket: user1Socket,
+            opponentID: data.id,
+            opponentMBTI: data.mbti,
+            opponenetAge: data.age,
+            opponenetGender: data.gender,
+          };
+          io.to(user1Socket).emit('match', data1);
+          io.to(user2Socket).emit('match', data2);
 
-        console.log(`user match ${user1Socket} : ${user2Socket}`);
-      }
+          console.log(`user match ${user1Socket} : ${user2Socket}`);
+        }
+      } catch (err) { console.log(err) }
     });
 
     socket.on('sendMsg', (data: msgData) => {
