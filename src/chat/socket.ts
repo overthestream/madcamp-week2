@@ -61,7 +61,9 @@ export const useSocket = (server: http.Server) => {
 
           console.log(`user match ${user1Socket} : ${user2Socket}`);
         }
-      } catch (err) { console.log(err) }
+      } catch (err) {
+        console.log(err);
+      }
     });
 
     socket.on('sendMsg', (data: msgData) => {

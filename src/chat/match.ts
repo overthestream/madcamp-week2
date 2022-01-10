@@ -34,10 +34,13 @@ export const match = async (user: userData) => {
       val: [],
     };
     const rows: Array<any> = await queryGenerator(query);
-    const filteredRows = rows.filter((element) => {
+    const filteredRows = rows.filter(element => {
       console.log(element);
-      return (element.finding & 1 << mbtiMapping(user.mbti)) && (user.finding.valueOf() & 1 << mbtiMapping(element.mbti))
-    })
+      return (
+        element.finding & (1 << mbtiMapping(user.mbti)) &&
+        user.finding.valueOf() & (1 << mbtiMapping(element.mbti))
+      );
+    });
     if (filteredRows.length) {
       return filteredRows[0];
     } else {
@@ -51,11 +54,11 @@ export const match = async (user: userData) => {
 };
 
 const mbtiMapping = (mbti: string) => {
-  const map = ["I", "N", "F", "P"];
+  const map = ['I', 'N', 'F', 'P'];
   let result = 0;
   for (let i = 0; i < 4; ++i) {
     if (mbti[i] == map[i]) result |= 1 << i;
   }
   console.log(`${mbti}: ${result}`);
   return result;
-}
+};
