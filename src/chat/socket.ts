@@ -7,6 +7,7 @@ export interface userData {
   gender: string;
   age: string;
   mbti: string;
+  finding: Number;
 }
 
 interface msgData {
@@ -31,7 +32,7 @@ export const useSocket = (server: http.Server) => {
     socket.on('init', async (data: userData) => {
       const matchResult = await match(data);
       if (matchResult === undefined) {
-        enqueue(data.id, socket.id);
+        enqueue(data.id, socket.id, data.finding);
       } else {
         await dequeue(matchResult.id);
 
