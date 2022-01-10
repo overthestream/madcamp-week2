@@ -1,6 +1,23 @@
 import { Request, Response } from 'express';
 import queryGenerator from '../../middleware/connector';
 
+export const getFriend = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.query;
+    const query = {
+      str: `SELECT add_to, nick , mbti, age, gender FROM friend natural join users WHERE add_from = $1`,
+      val: [id],
+    };
+    const result = await queryGenerator(query);
+    res.json(result);
+    console.log(result);
+    res.status(200);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+};
+
 export const addFriend = async (req: Request, res: Response) => {
   try {
     const { from, to } = req.body;
