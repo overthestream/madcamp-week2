@@ -90,7 +90,7 @@ export const useSocket = (server: http.Server) => {
     socket.on('disconnect', () => {
       console.log('disconnected');
       dequeue(socket.id);
-      socket.broadcast.emit('opponenetDisconnected!', socket.id);
+      socket.broadcast.emit('opponentDisconnected!', socket.id);
     });
   });
 };

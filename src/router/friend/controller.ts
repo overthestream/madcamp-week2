@@ -5,7 +5,7 @@ export const getFriend = async (req: Request, res: Response) => {
   try {
     const { id } = req.query;
     const query = {
-      str: `SELECT add_to, nick , mbti, age, gender FROM friend natural join users WHERE add_from = $1`,
+      str: `SELECT add_to, nick , mbti, age, gender FROM friend, users WHERE add_from = $1 AND add_to = id`,
       val: [id],
     };
     const result = await queryGenerator(query);
