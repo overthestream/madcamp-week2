@@ -20,7 +20,8 @@ export const getFriend = async (req: Request, res: Response) => {
 
 export const addFriend = async (req: Request, res: Response) => {
   try {
-    const { from, to } = req.body;
+    console.log(req);
+    const { from, to } = req.query;
     if (from === to) res.sendStatus(400);
     const query = {
       str: `INSERT INTO friend VALUES($1, $2)`,
@@ -49,7 +50,7 @@ export const getTalk = async (req: Request, res: Response) => {
     console.log(from);
     console.log(to);
     const query = {
-      str: `SELECT * FROM talk WHERE (send_from = $1 AND send_to = $2) OR (send_from = $2 AND send_to = $1) ORDER BY send_at`,
+      str: `SELECT * FROM talk WHERE (send_from = $1 AND send_to = $2) OR (send_from = $2 AND send_to = $1) ORDER BY send_at DESC`,
       val: [from, to],
     };
     const result = await queryGenerator(query);
